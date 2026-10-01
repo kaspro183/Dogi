@@ -88,3 +88,53 @@
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   if ($('yr')) $('yr').textContent = new Date().getFullYear();
 })();
+
+// Hero mascot: twinkling stars + shooting stars on a canvas
+(function(){
+  const c = document.querySelector('.mascot .stars');
+  if (!c) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx = c.getContext('2d');
+  let w, h, dpr, stars = [], shots = [], last = 0;
+  function size(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = c.clientWidth; h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stars = Array.from({length: Math.round(w * h / 2600)}, () => ({
+      x: Math.random() * w, y: Math.random() * h * 0.75,
+      r: Math.random() * 1.3 + 0.3, p: Math.random() * Math.PI * 2,
+      s: 0.6 + Math.random() * 1.6, gold: Math.random() < 0.3
+    }));
+  }
+  function shoot(){
+    shots.push({x: w * (0.3 + Math.random() * 0.7), y: -10, vx: -(2.2 + Math.random()), vy: 1.6 + Math.random(), life: 1});
+  }
+  function frame(t){
+    const dt = Math.min((t - last) / 16.7, 3); last = t;
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars){
+      const a = reduce ? 0.6 : 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t / 1000 * s.s + s.p));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = s.gold ? '#ffdb4d' : '#fff6dc';
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+    }
+    if (!reduce){
+      if (Math.random() < 0.004 * dt) shoot();
+      for (const s of shots){
+        s.x += s.vx * dt * 2; s.y += s.vy * dt * 2; s.life -= 0.012 * dt;
+        const g = ctx.createLinearGradient(s.x, s.y, s.x - s.vx * 22, s.y - s.vy * 22);
+        g.addColorStop(0, 'rgba(255,230,140,' + Math.max(s.life, 0) + ')');
+        g.addColorStop(1, 'rgba(255,230,140,0)');
+        ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * 22, s.y - s.vy * 22); ctx.stroke();
+      }
+      shots = shots.filter(s => s.life > 0 && s.y < h + 20);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  size();
+  window.addEventListener('resize', size);
+  if (reduce) frame(0); else { setTimeout(shoot, 900); requestAnimationFrame(frame); }
+})();
