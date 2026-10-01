@@ -8,11 +8,11 @@ const HEADERS = {
   'Referer': 'https://doggy.market/dogi',
 };
 
-// Candidate endpoints for the DOGI activity feed, tried in order.
+// DOGI activity feed endpoints, tried in order
+// (the same feed doggy.market/dogi uses for its Activity tab; type=sell = completed sales)
 const ACTIVITY_URLS = [
-  'https://api.doggy.market/token/dogi/activity?offset=0&limit=20',
-  'https://api.doggy.market/token/dogi/activity',
-  'https://api.doggy.market/activity/drc/dogi?offset=0&limit=20',
+  'https://api.doggy.market/listings/tick/dogi/orders?offset=0&limit=5&type=sell',
+  'https://api.doggy.market/listings/tick/dogi/orders?offset=0&limit=50',
 ];
 
 const getJson = async (url) => {
@@ -37,7 +37,9 @@ function findList(d) {
 // Map one activity item (exact shape unknown) to { amount, total, from, to, inscription, time }
 function normalize(it) {
   const type = String(pick(it, ['type', 'action', 'event', 'kind', 'op']) || '').toLowerCase();
+  const status = String(pick(it, ['status']) || '').toLowerCase();
   if (type && !/(sell|sale|sold|buy|bought|trade|match)/.test(type)) return null;
+  if (status && status !== 'bought' && status !== 'sold') return null;
   const amount = Number(pick(it, ['amount', 'amt', 'quantity', 'qty']));
   let total = toDoge(pick(it, ['price', 'totalPrice', 'total', 'value', 'priceTotal']));
   const unit = toDoge(pick(it, ['unitPrice', 'pricePerToken', 'pricePerUnit']));
