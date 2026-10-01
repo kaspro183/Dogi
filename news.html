@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DOGI — The First DRC-20 on Dogecoin</title>
-<meta name="description" content="DOGI is the first DRC-20 token ever inscribed on Dogecoin. 21M hard cap, fair mint, and heading to DogeOS. Live stats, news and a step-by-step buying guide.">
-<meta property="og:title" content="DOGI — The First DRC-20 on Dogecoin">
-<meta property="og:description" content="DOGI is the first DRC-20 token ever inscribed on Dogecoin. 21M hard cap, fair mint, and heading to DogeOS. Live stats, news and a step-by-step buying guide.">
+<title>DOGI News</title>
+<meta name="description" content="Latest news around DOGI, DRC-20 and DogeOS.">
+<meta property="og:title" content="DOGI News">
+<meta property="og:description" content="Latest news around DOGI, DRC-20 and DogeOS.">
 <meta name="theme-color" content="#0d0b08">
 <link rel="icon" type="image/webp" href="assets/logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <div class="links">
       <a href="about.html">About</a>
       <a href="dogeos.html">DogeOS</a>
-      <a href="news.html">News</a>
+      <a href="news.html" class="on" aria-current="page">News</a>
       <a href="buy.html">How to buy</a>
     </div>
     <div style="display:flex;gap:10px;align-items:center">
@@ -30,49 +30,16 @@
     </div>
   </div>
 </nav>
-<header class="hero" id="top">
-  <div class="wrap">
-    <div>
-      <span class="tag">The first DRC-20 · Since 2023</span>
-      <h1>The first token<br>ever on <span>Dogecoin</span>.</h1>
-      <p class="lead">DOGI was deployed on March 11, 2023 as the very first DRC-20 inscription. 21 million supply, fair minted, no pre-mine. Now heading to DogeOS, the new app layer for Dogecoin.</p>
-      <div class="cta">
-        <a class="btn btn-gold" href="buy.html">How to buy →</a>
-        <a class="btn btn-ghost" href="dogeos.html">DOGI × DogeOS</a>
-      </div>
-    </div>
-    <img class="big-coin" src="assets/logo.webp" alt="DOGI logo">
-  </div>
-</header>
-<div class="wrap">
-  <div class="stats" id="stats">
-    <div class="stat"><small>Last price</small><strong id="s-price">—</strong><span class="chg" id="s-chg"></span><em class="usd" id="s-price-usd"></em></div>
-    <div class="stat"><small>Floor price</small><strong id="s-floor">—</strong><em class="usd" id="s-floor-usd"></em></div>
-    <div class="stat"><small>Market cap</small><strong id="s-mcap">—</strong><em class="usd" id="s-mcap-usd"></em></div>
-    <div class="stat"><small>Holders</small><strong id="s-holders">—</strong><em class="usd" id="s-list"></em></div>
-  </div>
-  <div class="stats-note">
-    <span><span class="pulse" id="s-dot"></span><span id="s-status">Loading live data…</span></span>
-    <span>Live data from <a href="https://doggy.market/dogi" target="_blank" rel="noopener" style="color:var(--gold)">Doggy Market</a> · refreshes every 60s</span>
-  </div>
-</div>
-
-<section id="explore">
-  <div class="wrap">
-    <p class="kicker">Explore</p>
-    <h2 class="reveal">Everything DOGI.</h2>
-    <div class="tiles">
-      <a class="tile reveal" href="about.html"><div class="ico">📜</div><h3>About</h3><p>The first DRC-20, fair minted in 2023. 21M supply, forever.</p><span>Read the story →</span></a>
-      <a class="tile reveal" href="dogeos.html"><div class="ico">🌉</div><h3>DogeOS</h3><p>Bridge, DOGI/DOGE pool, staking and DAO with Laika.</p><span>See the roadmap →</span></a>
-      <a class="tile reveal" href="news.html"><div class="ico">📰</div><h3>News</h3><p>Latest updates on DOGI, DRC-20 and DogeOS.</p><span>Read the news →</span></a>
-      <a class="tile reveal" href="buy.html"><div class="ico">🛒</div><h3>How to buy</h3><p>Wallets, Doggy Market and safety tips, step by step.</p><span>Start here →</span></a>
-    </div>
-  </div>
-</section>
-<section id="latest" class="alt">
+<header class="page-head">
   <div class="wrap">
     <p class="kicker">Latest</p>
-    <h2 class="reveal">News</h2>
+    <h1>News</h1>
+    <p class="sub" style="margin-bottom:0">What's happening around DOGI, DRC-20 and DogeOS.</p>
+  </div>
+</header>
+<section id="news">
+  <div class="wrap">
+
     <div class="news">
       <a class="item reveal" href="https://t.me/dogi_doginals_drc20/53943" target="_blank" rel="noopener">
         <time class="mono">Oct 1, 2026</time>
@@ -89,11 +56,20 @@
         <div><h3>How the DogeOS bridge is secured <span class="badge">DogeOS</span></h3><p>For now, Dogecoin doesn't verify DogeOS proofs itself. The bridge relies on valid proofs plus signatures from DogeOS validators and a TEE signer.</p></div>
         <span class="src">Unchained ↗</span>
       </a>
+      <a class="item reveal" href="https://x.com/DogeOS/status/1989022090243322101" target="_blank" rel="noopener">
+        <time class="mono">Nov 13, 2025</time>
+        <div><h3>BarkSwap featured as a Doge-native DEX <span class="badge">Ecosystem</span></h3><p>DogeOS spotlighted BarkSwap, a ve(3,3) DEX built for memecoin liquidity, launching alongside the testnet.</p></div>
+        <span class="src">X ↗</span>
+      </a>
+      <a class="item reveal" href="https://doggy.market/dogi" target="_blank" rel="noopener">
+        <time class="mono">May 11, 2023</time>
+        <div><h3>All 21,000,000 DOGI minted <span class="badge">Milestone</span></h3><p>Two months after deployment, the fair mint completed and DOGI's supply was sealed for good.</p></div>
+        <span class="src">Doggy Market ↗</span>
+      </a>
     </div>
-    <div class="more"><a class="btn btn-ghost" href="news.html">All news →</a></div>
   </div>
 </section>
-<section id="community">
+<section id="community" class="alt">
   <div class="wrap">
     <p class="kicker">Community</p>
     <h2 class="reveal">Join the pack.</h2>

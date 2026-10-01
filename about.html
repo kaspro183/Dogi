@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About DOGI — The First DRC-20</title>
+<meta name="description" content="The story of DOGI, the first DRC-20 token inscribed on Dogecoin: 21M hard cap, fair mint, no pre-mine.">
+<meta property="og:title" content="About DOGI — The First DRC-20">
+<meta property="og:description" content="The story of DOGI, the first DRC-20 token inscribed on Dogecoin: 21M hard cap, fair mint, no pre-mine.">
+<meta name="theme-color" content="#0d0b08">
+<link rel="icon" type="image/webp" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+    <div class="links">
+      <a href="about.html" class="on" aria-current="page">About</a>
+      <a href="dogeos.html">DogeOS</a>
+      <a href="news.html">News</a>
+      <a href="buy.html">How to buy</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="btn btn-gold" href="https://doggy.market/dogi" target="_blank" rel="noopener">Buy DOGI</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</nav>
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">About DOGI</p>
+    <h1>Dogecoin's original inscription.</h1>
+    <p class="sub" style="margin-bottom:0">Before DeFi, before L2s, there was DOGI. It brought fungible tokens to Dogecoin for the first time, inspired by Bitcoin's Ordinals and BRC-20, and it was minted entirely by the community.</p>
+  </div>
+</header>
+<section id="about">
+  <div class="wrap">
+
+    <div class="facts reveal">
+      <div class="fact"><b>21M</b><span>Hard-capped supply</span></div>
+      <div class="fact"><b>0%</b><span>Pre-mine or team reserve</span></div>
+      <div class="fact"><b>Mar 11</b><span>2023 · deployed</span></div>
+      <div class="fact"><b>May 11</b><span>2023 · fully minted</span></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="reveal">
+        <div class="grid" style="gap:18px">
+          <div class="card"><div class="ico">📜</div><h3>What is DRC-20?</h3><p>The fungible token standard of Dogecoin, built on Doginals. A small JSON payload is inscribed on-chain, and indexers compute balances from those inscriptions. No smart contracts needed.</p></div>
+          <div class="card"><div class="ico">⚖️</div><h3>Fair from day one</h3><p>No ICO, no pre-sale, no VC. Anyone could mint 1,000 DOGI per inscription until all 21 million were claimed two months after launch.</p></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <pre class="code mono"><span class="c">// The DOGI deploy inscription</span>
+{
+  <span class="k">"p"</span>:    "drc-20",
+  <span class="k">"op"</span>:   "deploy",
+  <span class="k">"tick"</span>: "dogi",
+  <span class="k">"max"</span>:  "21000000",
+  <span class="k">"lim"</span>:  "1000"
+}</pre>
+        <div class="card" style="margin-top:18px"><div class="ico">🥇</div><h3>Scarce by design</h3><p>Dogecoin has an ongoing issuance. DOGI's supply is fixed forever at 21 million, the same cap as Bitcoin.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="community" class="alt">
+  <div class="wrap">
+    <p class="kicker">Community</p>
+    <h2 class="reveal">Join the pack.</h2>
+    <p class="sub reveal">DOGI is community-run. Come say gm.</p>
+    <div class="comm">
+      <a class="reveal" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener"><span class="ic">✈️</span><div><b>Telegram</b><span>@dogi_doginals_drc20</span></div></a>
+      <a class="reveal" href="https://x.com/DogiDrc20" target="_blank" rel="noopener"><span class="ic">𝕏</span><div><b>X / Twitter</b><span>@DogiDrc20</span></div></a>
+      <a class="reveal" href="https://doggy.market/dogi" target="_blank" rel="noopener"><span class="ic">🦴</span><div><b>Doggy Market</b><span>Trade DOGI</span></div></a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+      <div class="foot-links">
+        <a href="about.html">About</a><a href="dogeos.html">DogeOS</a><a href="news.html">News</a><a href="buy.html">How to buy</a>
+        <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <p>Disclaimer: this website is made by the DOGI community for information only and is not financial advice. Crypto assets are highly volatile and you can lose your entire investment. Always do your own research.</p>
+    <p>© <span id="yr">2026</span> DOGI Community · The first DRC-20 token on Dogecoin · Much wow.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
