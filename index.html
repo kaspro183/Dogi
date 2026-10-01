@@ -63,7 +63,19 @@
   </div>
   <div class="stats-note">
     <span><span class="pulse" id="s-dot"></span><span id="s-status">Loading live data…</span></span>
-    <span>Live data from <a href="https://doggy.market/dogi" target="_blank" rel="noopener" style="color:var(--gold)">Doggy Market</a> · refreshes every 60s</span>
+    <span>Live data from <a href="https://doggy.market/dogi" target="_blank" rel="noopener" style="color:var(--gold)">Doggy Market</a> · refreshes every 5 min</span>
+  </div>
+  <div class="sales" id="sales" hidden>
+    <div class="sales-head">
+      <h3>Recent sales</h3>
+      <a href="https://doggy.market/dogi" target="_blank" rel="noopener"><span class="vl">View all on Doggy Market</span><span class="vs">View all</span> ↗</a>
+    </div>
+    <div class="sales-table" role="table" aria-label="Last 5 DOGI sales">
+      <div class="srow shead" role="row">
+        <span role="columnheader">Token</span><span role="columnheader">Amount</span><span role="columnheader">Price</span><span role="columnheader">From → To</span><span role="columnheader">Time</span>
+      </div>
+      <div id="sales-rows"></div>
+    </div>
   </div>
 </div>
 

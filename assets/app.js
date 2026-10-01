@@ -67,6 +67,7 @@
       const d = await fetchLive();
       if(d.dogeUsd) dogeUsd = d.dogeUsd;
       render(d.token);
+      renderSales(d.sales);
       hasLive = true;
       $('s-dot').classList.remove('off');
       $('s-status').textContent = 'Live · updated ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
@@ -78,7 +79,35 @@
       $('s-status').innerHTML = 'Last known values (' + SNAPSHOT.date + '). <a href="https://doggy.market/dogi" target="_blank" rel="noopener" style="color:var(--gold)">Live price on Doggy Market →</a>';
     }
   }
-  if ($('stats')) { load(); setInterval(load, 60000); }
+  // Recent sales (real data only: the block stays hidden if none are available)
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  const short = a => a ? esc(String(a).slice(0,5)) + '…' + esc(String(a).slice(-5)) : '—';
+  function renderSales(list){
+    const box = $('sales'), rows = $('sales-rows');
+    if (!box || !rows) return;
+    if (!Array.isArray(list) || !list.length){ box.hidden = true; return; }
+    rows.innerHTML = list.slice(0,5).map(s => {
+      const t = new Date(s.time), unit = s.total / s.amount;
+      const date = t.toLocaleDateString('en-GB') + ' <br>' + t.toLocaleTimeString('en-GB');
+      return '<div class="srow" role="row">' +
+        '<span class="s-tok"><img src="assets/logo.webp" alt=""><span><b>dogi<span class="s-badge">sell</span></b>' + (s.inscription ? '<small>#' + esc(s.inscription) + '</small>' : '') + '</span></span>' +
+        '<span class="s-amt">' + Number(s.amount).toLocaleString('en-US') + ' <em>DOGI</em></span>' +
+        '<span class="s-price"><b>' + Number(s.total).toLocaleString('en-US',{maximumFractionDigits:2}) + ' Ð</b><small>' + unit.toLocaleString('en-US',{maximumFractionDigits:4}) + ' Ð / dogi</small></span>' +
+        '<span class="s-addr"><span>' + short(s.from) + '</span><i>→</i><span>' + short(s.to) + '</span></span>' +
+        '<span class="s-time">' + date + '</span></div>';
+    }).join('');
+    box.hidden = false;
+  }
+
+  // Refresh every 5 minutes, and only while the tab is visible
+  if ($('stats')) {
+    load();
+    let timer = setInterval(load, 300000);
+    document.addEventListener('visibilitychange', () => {
+      clearInterval(timer);
+      if (!document.hidden) { load(); timer = setInterval(load, 300000); }
+    });
+  }
   const bg = document.querySelector('.burger');
   if (bg) bg.addEventListener('click', () => { const l = document.querySelector('.links'); const o = l.classList.toggle('open'); bg.setAttribute('aria-expanded', o); });
 
