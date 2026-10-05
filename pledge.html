@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About DOGI — The First DRC-20</title>
-<meta name="description" content="The story of DOGI, the first DRC-20 token inscribed on Dogecoin: 21M hard cap, fair mint, no pre-mine.">
-<meta property="og:title" content="About DOGI — The First DRC-20">
-<meta property="og:description" content="The story of DOGI, the first DRC-20 token inscribed on Dogecoin: 21M hard cap, fair mint, no pre-mine.">
+<title>DOGI liquidity pledges</title>
+<meta name="description" content="Community pledges for the DOGI/DOGE pool on DogeOS: who is ready to provide liquidity at launch, and how close we are to the goal.">
+<meta property="og:title" content="DOGI liquidity pledges">
+<meta property="og:description" content="Community pledges for the DOGI/DOGE pool on DogeOS: who is ready to provide liquidity at launch, and how close we are to the goal.">
 <meta property="og:image" content="https://dogidrc20.netlify.app/assets/banner.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://dogidrc20.netlify.app/assets/banner.jpg">
@@ -22,11 +22,11 @@
   <div class="wrap">
     <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
     <div class="links">
-      <a href="about.html" class="on" aria-current="page">About</a>
+      <a href="about.html">About</a>
       <a href="dogeos.html">DogeOS</a>
       <a href="news.html">News</a>
       <a href="buy.html">How to buy</a>
-      <a href="pledge.html">Pledge</a>
+      <a href="pledge.html" class="on" aria-current="page">Pledge</a>
       <a class="m-soc" href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X / Twitter</a>
       <a class="m-soc" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
     </div>
@@ -40,40 +40,42 @@
 </nav>
 <header class="page-head">
   <div class="wrap">
-    <p class="kicker">About DOGI</p>
-    <h1>Dogecoin's original inscription.</h1>
-    <p class="sub" style="margin-bottom:0">Before DeFi, before L2s, there was DOGI. It brought fungible tokens to Dogecoin for the first time, inspired by Bitcoin's Ordinals and BRC-20, and it was minted entirely by the community.</p>
+    <p class="kicker">Liquidity</p>
+    <h1>DOGI/DOGE pool pledges</h1>
+    <p class="sub" style="margin-bottom:0">When DogeOS mainnet launches, DOGI will need a DOGI/DOGE pool with real depth. Laika has mentioned a starting target of around $100k of liquidity. This page tracks what the community says it is ready to add on day one.</p>
   </div>
 </header>
-<section id="about">
+<section id="pledges">
   <div class="wrap">
-
-    <div class="facts reveal">
-      <div class="fact"><b>21M</b><span>Hard-capped supply</span></div>
-      <div class="fact"><b>0%</b><span>Pre-mine or team reserve</span></div>
-      <div class="fact"><b>Mar 11</b><span>2023 · deployed</span></div>
-      <div class="fact"><b>May 11</b><span>2023 · fully minted</span></div>
+    <div class="pl-goal reveal">
+      <div class="pl-top">
+        <div><span class="pl-k">Pledged so far</span><b id="pl-total">$0</b></div>
+        <div class="pl-right"><span class="pl-k">Goal</span><b id="pl-goal">$100,000</b></div>
+      </div>
+      <div class="pl-bar"><span id="pl-fill" style="width:0%"></span></div>
+      <div class="pl-sub"><span id="pl-pct">0%</span> of the goal · <span id="pl-count">0 pledges</span> · <span id="pl-doge">0</span> DOGE + <span id="pl-dogi">0</span> DOGI</div>
+      <p class="pl-note" id="pl-rate">USD values use the live DOGI price from Doggy Market and DOGE/USD from CoinGecko.</p>
     </div>
 
-    <div class="grid g2">
-      <div class="reveal">
-        <div class="grid" style="gap:18px">
-          <div class="card"><div class="ico">📜</div><h3>What is DRC-20?</h3><p>The fungible token standard of Dogecoin, built on Doginals. A small JSON payload is inscribed on-chain, and indexers compute balances from those inscriptions. No smart contracts needed.</p></div>
-          <div class="card"><div class="ico">⚖️</div><h3>Fair from day one</h3><p>No ICO, no pre-sale, no VC. Anyone could mint 1,000 DOGI per inscription until all 21 million were claimed two months after launch.</p></div>
-        </div>
-      </div>
-      <div class="reveal">
-        <pre class="code mono"><span class="c">// The DOGI deploy inscription</span>
-{
-  <span class="k">"p"</span>:    "drc-20",
-  <span class="k">"op"</span>:   "deploy",
-  <span class="k">"tick"</span>: "dogi",
-  <span class="k">"max"</span>:  "21000000",
-  <span class="k">"lim"</span>:  "1000"
-}</pre>
-        <div class="card" style="margin-top:18px"><div class="ico">🥇</div><h3>Scarce by design</h3><p>Dogecoin has an ongoing issuance. DOGI's supply is fixed forever at 21 million, the same cap as Bitcoin.</p></div>
-      </div>
+    <div class="pl-how reveal">
+      <h3>How to pledge</h3>
+      <ol>
+        <li>Join the <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">DOGI Telegram group</a>.</li>
+        <li>Send <code>/pledge 5000 DOGE 5000 DOGI</code> with your own amounts (DOGE only or DOGI only works too). Tip: type <code>/</code> and pick <b>pledge</b> from the bot menu.</li>
+        <li>The pledge bot confirms in the chat and this table updates within a minute. One pledge per Telegram account: send <code>/pledge</code> again to change it, <code>/unpledge</code> to remove it.</li>
+      </ol>
     </div>
+
+    <div class="pl-warn reveal">
+      <b>⚠️ A pledge is only a public intention.</b> No funds are collected here, and the pool does not exist yet. It will be created on DogeOS at launch. <b>Nobody will ever ask you to send DOGE or DOGI to a wallet for this.</b> If someone does, it is a scam. Pledges show your Telegram @username (or first name) publicly.
+    </div>
+
+    <div class="pl-table reveal">
+      <div class="pl-row pl-h"><span>#</span><span>Name</span><span>DOGE</span><span>DOGI</span><span>≈ USD</span><span>Date</span></div>
+      <div id="pl-rows"></div>
+      <p class="pl-empty" id="pl-empty">No pledges yet. Be the first on <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a> 🐕</p>
+    </div>
+    <p class="pl-upd">Last updated: <span id="pl-upd">–</span></p>
   </div>
 </section>
 <section id="community" class="alt">
@@ -103,5 +105,6 @@
   </div>
 </footer>
 <script src="assets/app.js"></script>
+<script src="assets/pledge.js"></script>
 </body>
 </html>
