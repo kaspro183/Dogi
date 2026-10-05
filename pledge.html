@@ -57,17 +57,21 @@
       <p class="pl-note" id="pl-rate">USD values use the live DOGI price from Doggy Market and DOGE/USD from CoinGecko.</p>
     </div>
 
-    <div class="pl-how reveal">
-      <h3>How to pledge</h3>
-      <ol>
-        <li>Join the <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">DOGI Telegram group</a>.</li>
-        <li>Send <code>/pledge 5000 DOGE 5000 DOGI</code> with your own amounts (DOGE only or DOGI only works too). Tip: type <code>/</code> and pick <b>pledge</b> from the bot menu.</li>
-        <li>The pledge bot confirms in the chat and this table updates within a minute. One pledge per Telegram account: send <code>/pledge</code> again to change it, <code>/unpledge</code> to remove it.</li>
-      </ol>
+    <div class="pl-how reveal" id="pledge-form">
+      <h3>Add your pledge</h3>
+      <p class="pl-hint">How much would you add to the DOGI/DOGE pool on launch day? Use the same @username as in the <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">DOGI Telegram</a>. Submitting again with the same @username replaces your pledge.</p>
+      <form id="pl-form" novalidate>
+        <label class="pl-f pl-name"><span>Telegram @username</span><input name="name" placeholder="@yourname" autocomplete="off" maxlength="33" required></label>
+        <label class="pl-f"><span>DOGE</span><input name="doge" inputmode="numeric" placeholder="5000"></label>
+        <label class="pl-f"><span>DOGI</span><input name="dogi" inputmode="numeric" placeholder="5000"></label>
+        <label class="pl-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <button class="btn btn-gold" type="submit">Pledge 💧</button>
+      </form>
+      <p class="pl-msg" id="pl-msg" role="status"></p>
     </div>
 
     <div class="pl-warn reveal">
-      <b>⚠️ A pledge is only a public intention.</b> No funds are collected here, and the pool does not exist yet. It will be created on DogeOS at launch. <b>Nobody will ever ask you to send DOGE or DOGI to a wallet for this.</b> If someone does, it is a scam. Pledges show your Telegram @username (or first name) publicly.
+      <b>⚠️ A pledge is only a public intention.</b> No funds are collected here, and the pool does not exist yet. It will be created on DogeOS at launch. <b>Nobody will ever ask you to send DOGE or DOGI to a wallet for this.</b> If someone does, it is a scam. Pledges are self-declared and show your @username publicly.
     </div>
 
     <div class="pl-table reveal">
