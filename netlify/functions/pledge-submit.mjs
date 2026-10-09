@@ -3,7 +3,7 @@
 import { getStore } from '@netlify/blobs';
 import { createHash } from 'node:crypto';
 
-const MAX_DOGE = 100_000_000, MAX_DOGI = 21_000_000;
+const MAX_DOGE = 20_000, MAX_DOGI = 20_000;
 const RATE_MAX = 5, RATE_WINDOW = 60 * 60 * 1000; // 5 submissions per hour per connection
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
@@ -24,7 +24,7 @@ export default async (req, context) => {
   const doge = amount(body.doge), dogi = amount(body.dogi);
   if (Number.isNaN(doge) || Number.isNaN(dogi)) return json({ error: 'Amounts must be numbers.' }, 400);
   if (doge === 0 && dogi === 0) return json({ error: 'Enter a DOGE and/or DOGI amount.' }, 400);
-  if (doge > MAX_DOGE || dogi > MAX_DOGI) return json({ error: 'Amount too big (max 100,000,000 DOGE and 21,000,000 DOGI).' }, 400);
+  if (doge > MAX_DOGE || dogi > MAX_DOGI) return json({ error: 'Max 20,000 DOGE and 20,000 DOGI per pledge.' }, 400);
 
   // rate limit per connection (hashed, never stored in clear)
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'unknown';

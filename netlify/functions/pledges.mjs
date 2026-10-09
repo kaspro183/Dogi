@@ -1,10 +1,18 @@
 // Public list of pledges for pledge.html (names + amounts only, no Telegram IDs)
 import { getStore } from '@netlify/blobs';
 
+// Pledges removed by the site admin (deleted from the store on the next request)
+const REMOVED = ['nipirendi', 'nemmzachs', 'nemmrachs', 'narifcsh'];
+
 export default async () => {
   try {
     const store = getStore('pledges');
-    const { blobs } = await store.list();
+    let { blobs } = await store.list();
+    const stale = blobs.filter((b) => REMOVED.includes(b.key));
+    if (stale.length) {
+      await Promise.all(stale.map((b) => store.delete(b.key)));
+      blobs = blobs.filter((b) => !REMOVED.includes(b.key));
+    }
     const items = await Promise.all(blobs.map((b) => store.get(b.key, { type: 'json' }).catch(() => null)));
     const pledges = items.filter(Boolean).map(({ name, doge, dogi, date, updated }) => ({ name, doge, dogi, date: (date || '').slice(0, 10), updated }));
     const last = pledges.reduce((m, p) => (p.updated > m ? p.updated : m), '');
