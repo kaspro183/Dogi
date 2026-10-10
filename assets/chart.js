@@ -9,6 +9,18 @@
   const RANGES = { '7D': 7, '1M': 30, '1Y': 365, 'ALL': Infinity };
   let range = 'ALL', DAYS = [];
 
+  // Drop isolated outlier days (e.g. one sale at a typo price): a day is removed when its
+  // price is more than 4x above, or 4x below, the median of the 7 days on each side.
+  function clean(days) {
+    const med = (a) => { const b = [...a].sort((x, y) => x - y), m = b.length >> 1; return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; };
+    return days.filter((d, i) => {
+      const around = days.slice(Math.max(0, i - 7), i).concat(days.slice(i + 1, i + 8)).map((x) => x[1]);
+      if (around.length < 4) return true;
+      const m = med(around);
+      return d[1] <= m * 4 && d[1] >= m / 4;
+    });
+  }
+
   const fmt = (x) => (x >= 10 ? x.toFixed(1) : x >= 1 ? x.toFixed(2) : x.toFixed(3)) + ' Ð';
   const dlong = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
@@ -80,7 +92,7 @@
 
   fetch('/api/dogi-history').then((r) => r.ok ? r.json() : null).then((j) => {
     if (!j || !j.complete || !Array.isArray(j.days) || j.days.length < 10) return; // stay hidden
-    DAYS = j.days;
+    DAYS = clean(j.days);
     box.hidden = false;
     document.body.classList.add('has-hchart');
     draw();
