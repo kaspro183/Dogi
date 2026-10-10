@@ -1,6 +1,6 @@
 // DOGI price history strip in the hero glow (home page).
-// Data: /api/dogi-history = daily median price of every Doggy Market sale, in DOGE.
-// The block stays hidden until the full history has been collected.
+// Data: /api/dogi-history = Doggy Market chart data, one median price per day, in DOGE.
+// The block stays hidden if the data cannot be loaded.
 (function () {
   const box = document.getElementById('hchart');
   if (!box) return;

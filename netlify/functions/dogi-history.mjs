@@ -1,28 +1,41 @@
-// GET /api/dogi-history -> daily DOGI price series built from every Doggy Market sale.
-// { complete, updated, total, days: [[YYYY-MM-DD, medianPriceDOGE, dogiTraded, trades], ...] }
-// ?sync runs one sync step (useful right after the first deploy, before the schedule kicks in).
-import { loadState, series, syncStep } from '../lib/history.mjs';
+// GET /api/dogi-history -> daily DOGI price series from Doggy Market's own chart data.
+// Source: https://api.doggy.market/listings/tick/dogi/chart = [{ date: ms, price: shibes per DOGI }, ...]
+// (one point per sale). We reduce it to one point per day (median) to keep the payload small.
+// Response: { complete, updated, points, days: [[YYYY-MM-DD, medianPriceDOGE, 0, sales], ...] }
+const HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (DOGI community site)',
+  'Accept': 'application/json',
+  'Origin': 'https://doggy.market',
+  'Referer': 'https://doggy.market/dogi',
+};
+const SHIBE = 1e8;
+const median = (a) => { const b = [...a].sort((x, y) => x - y), m = b.length >> 1; return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; };
 
-export default async (req) => {
-  const url = new URL(req.url);
-  let sync = null;
-  let state = await loadState();
-  // manual sync is only allowed while the first backfill is still running
-  if (url.searchParams.has('sync') && !state.complete) {
-    try { sync = await syncStep(8000); } catch (e) { sync = { error: String(e.message || e) }; }
-    state = await loadState();
+export default async () => {
+  try {
+    const r = await fetch('https://api.doggy.market/listings/tick/dogi/chart', { headers: HEADERS });
+    if (!r.ok) throw new Error('doggy.market ' + r.status);
+    const raw = await r.json();
+    const list = Array.isArray(raw) ? raw : (raw?.data || []);
+    const byDay = {};
+    for (const p of list) {
+      const t = Number(p?.date), price = Number(p?.price) / SHIBE;
+      if (!isFinite(t) || !(price > 0)) continue;
+      (byDay[new Date(t).toISOString().slice(0, 10)] ||= []).push(price);
+    }
+    const days = Object.keys(byDay).sort().map((d) => [d, +median(byDay[d]).toPrecision(5), 0, byDay[d].length]);
+    return new Response(JSON.stringify({ complete: days.length > 0, updated: new Date().toISOString(), points: list.length, days }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=600',
+        'Netlify-CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+      },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ complete: false, error: String(e.message || e) }), {
+      status: 502, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+    });
   }
-  const days = series(state);
-  const body = { complete: state.complete, updated: state.updated || null, total: state.total,
-                 counted: days.reduce((t, d) => t + d[3], 0), days };
-  if (sync) body.sync = sync;
-  return new Response(JSON.stringify(body), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': sync ? 'no-store' : 'public, max-age=300',
-      'Netlify-CDN-Cache-Control': sync ? 'no-store' : 'public, s-maxage=600, stale-while-revalidate=1800',
-    },
-  });
 };
 
 export const config = { path: '/api/dogi-history' };
