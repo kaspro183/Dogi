@@ -6,15 +6,17 @@ import { loadState, series, syncStep } from '../lib/history.mjs';
 export default async () => {
   let state = await loadState();
   // very first call after deploy: prepare the data now instead of waiting for the schedule
-  if (!state.updated) { try { await syncStep(8000); } catch {} state = await loadState(); }
+  let syncError;
+  if (!state.updated) { try { await syncStep(8000); } catch (e) { syncError = String(e && (e.stack || e.message) || e).slice(0, 400); } state = await loadState(); }
   const days = series(state);
   const complete = state.source === 'chart' ? days.length > 0 : !!state.complete;
   return new Response(JSON.stringify({ complete, source: state.source || null, updated: state.updated || null,
-    progress: state.source === 'sales' ? { offset: state.offset, total: state.total } : undefined, days }), {
+    progress: state.source === 'sales' ? { offset: state.offset, total: state.total } : undefined,
+    chartError: state.chartError, syncError, days }), {
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'public, max-age=300',
-      'Netlify-CDN-Cache-Control': complete ? 'public, s-maxage=1800, stale-while-revalidate=3600' : 'public, s-maxage=120',
+      'Netlify-CDN-Cache-Control': syncError ? 'no-store' : complete ? 'public, s-maxage=1800, stale-while-revalidate=3600' : 'public, s-maxage=120',
     },
   });
 };
