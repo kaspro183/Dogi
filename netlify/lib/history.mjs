@@ -157,3 +157,27 @@ export function series(state) {
     return [day, +median(rows.map((r) => r[0])).toPrecision(5), Math.round(rows.reduce((t, r) => t + r[1], 0)), rows.length];
   });
 }
+
+// ---- DOGE/USD daily close (Coinbase Exchange public candles, no key), cached 12 h ----
+export async function dogeUsdRates() {
+  const s = store();
+  const cached = await s.get('dogeusd', { type: 'json' }).catch(() => null);
+  if (cached && Date.now() - Date.parse(cached.updated) < 12 * 3600 * 1000) return cached.rates;
+  const rates = { ...(cached?.rates || {}) };
+  const DAY = 86400 * 1000, end = Date.now();
+  // resume from the last known day (minus a few days), or from DOGI's first trades
+  const known = Object.keys(rates).sort();
+  let from = known.length ? Date.parse(known[known.length - 1]) - 5 * DAY : Date.parse('2023-03-01');
+  while (from < end) {
+    const to = Math.min(from + 290 * DAY, end);
+    const u = `https://api.exchange.coinbase.com/products/DOGE-USD/candles?granularity=86400&start=${new Date(from).toISOString()}&end=${new Date(to).toISOString()}`;
+    const r = await fetch(u, { headers: { 'User-Agent': 'dogidrc20.org (community site)', 'Accept': 'application/json' } });
+    if (!r.ok) throw new Error('coinbase ' + r.status);
+    for (const c of await r.json()) {           // [time(s), low, high, open, close, volume]
+      if (Array.isArray(c) && c[4] > 0) rates[new Date(c[0] * 1000).toISOString().slice(0, 10)] = +Number(c[4]).toPrecision(5);
+    }
+    from = to;
+  }
+  await s.setJSON('dogeusd', { updated: new Date().toISOString(), rates });
+  return rates;
+}

@@ -7,7 +7,7 @@
   const plot = document.getElementById('hc-plot');
   const athEl = document.getElementById('hc-ath');
   const RANGES = { '7D': 7, '1M': 30, '1Y': 365, 'ALL': Infinity };
-  let range = 'ALL', DAYS = [];
+  let range = 'ALL', cur = 'D', DAYS = [], HAS_USD = false;
 
   // Drop isolated outlier days (e.g. one sale at a typo price): a day is removed when its
   // price is more than 4x above, or 4x below, the median of the 7 days on each side.
@@ -21,11 +21,15 @@
     });
   }
 
-  const fmt = (x) => (x >= 10 ? x.toFixed(1) : x >= 1 ? x.toFixed(2) : x.toFixed(3)) + ' Ð';
+  const fmtD = (x) => (x >= 10 ? x.toFixed(1) : x >= 1 ? x.toFixed(2) : x.toFixed(3)) + ' Ð';
+  const fmtU = (x) => '$' + (x >= 1 ? x.toFixed(2) : x >= 0.01 ? x.toFixed(3) : x.toFixed(4));
+  const fmt = (x) => (cur === '$' ? fmtU(x) : fmtD(x));
+  const val = (d) => (cur === '$' ? (d[4] ? d[1] * d[4] : null) : d[1]);
   const dlong = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
   function draw() {
-    const n0 = RANGES[range], pts = n0 === Infinity ? DAYS : DAYS.slice(-n0);
+    const src = DAYS.filter((d) => val(d) != null).map((d) => [d[0], val(d), d[2], d[3], d]);
+    const n0 = RANGES[range], pts = n0 === Infinity ? src : src.slice(-n0);
     if (pts.length < 2) { plot.innerHTML = ''; return; }
     const W = Math.max(280, plot.clientWidth || 1080), H = W < 600 ? 130 : 150, pr = 46, pt = 10, pb = 20, n = pts.length - 1;
     const vals = pts.map((d) => d[1]);
@@ -38,7 +42,7 @@
     let g = '';
     [0, 0.5, 1].forEach((f) => {
       const v = min + (max - min) * f, y = Y(v);
-      g += `<line x1="0" x2="${W - pr}" y1="${y}" y2="${y}" stroke="rgba(245,196,0,.12)" stroke-dasharray="3 5"/><text class="hc-ax" x="${W - pr + 8}" y="${y + 4}">${v >= 1 ? v.toFixed(1) : v.toFixed(2)}</text>`;
+      g += `<line x1="0" x2="${W - pr}" y1="${y}" y2="${y}" stroke="rgba(245,196,0,.12)" stroke-dasharray="3 5"/><text class="hc-ax" x="${W - pr + 8}" y="${y + 4}">${cur === '$' ? (v >= 0.01 ? v.toFixed(2) : v.toFixed(3)) : v >= 1 ? v.toFixed(1) : v.toFixed(2)}</text>`;
     });
     // x labels: years for ALL, months for 1Y, dates otherwise
     const labs = [];
@@ -61,7 +65,7 @@
 <circle cx="${X(n)}" cy="${Y(vals[n])}" r="9" fill="#f5c400" opacity=".3"/><circle cx="${X(n)}" cy="${Y(vals[n])}" r="4.5" fill="#f5c400"/>
 <line class="hc-hl" x1="0" x2="0" y1="${pt}" y2="${H - pb}" stroke="#f5c400" stroke-opacity=".55" stroke-dasharray="2 4" vector-effect="non-scaling-stroke" style="display:none"/>
 </svg><div class="hc-dot"></div><div class="hc-tip"></div>`;
-    athEl.textContent = fmt(Math.max(...DAYS.map((x) => x[1])));
+    athEl.textContent = fmt(Math.max(...src.map((x) => x[1])));
 
     const svg = plot.querySelector('svg'), tip = plot.querySelector('.hc-tip'), dot = plot.querySelector('.hc-dot'), hl = svg.querySelector('.hc-hl');
     const move = (e) => {
@@ -70,7 +74,8 @@
       const x = X(i), y = Y(pts[i][1]), px = (x / W) * b.width, py = (y / H) * b.height;
       hl.setAttribute('x1', x); hl.setAttribute('x2', x); hl.style.display = '';
       dot.style.cssText = `display:block;left:${px}px;top:${py}px`;
-      tip.innerHTML = `<span>${dlong(pts[i][0])}</span><b>${fmt(pts[i][1])}</b><span>${pts[i][3]} trade${pts[i][3] > 1 ? 's' : ''}</span>`;
+      const raw = pts[i][4], other = cur === '$' ? fmtD(raw[1]) : (raw[4] ? '≈ ' + fmtU(raw[1] * raw[4]) : '');
+      tip.innerHTML = `<span>${dlong(pts[i][0])}</span><b>${fmt(pts[i][1])}</b><span>${other}${other ? ' · ' : ''}${pts[i][3]} trade${pts[i][3] > 1 ? 's' : ''}</span>`;
       tip.style.display = 'block';
       tip.style.left = Math.min(px + 14, b.width - tip.offsetWidth - 2) + 'px';
       tip.style.top = Math.max(-8, py - tip.offsetHeight - 10) + 'px';
@@ -85,14 +90,20 @@
 
   let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => DAYS.length && draw(), 150); });
 
-  box.querySelectorAll('.hc-seg b').forEach((b) => b.addEventListener('click', () => {
-    box.querySelectorAll('.hc-seg b').forEach((x) => x.classList.remove('on'));
+  box.querySelectorAll('.hc-seg[data-k="range"] b').forEach((b) => b.addEventListener('click', () => {
+    box.querySelectorAll('.hc-seg[data-k="range"] b').forEach((x) => x.classList.remove('on'));
     b.classList.add('on'); range = b.textContent.trim(); draw();
+  }));
+  box.querySelectorAll('.hc-seg[data-k="cur"] b').forEach((b) => b.addEventListener('click', () => {
+    box.querySelectorAll('.hc-seg[data-k="cur"] b').forEach((x) => x.classList.remove('on'));
+    b.classList.add('on'); cur = b.dataset.cur; draw();
   }));
 
   fetch('/api/dogi-history').then((r) => r.ok ? r.json() : null).then((j) => {
     if (!j || !j.complete || !Array.isArray(j.days) || j.days.length < 10) return; // stay hidden
     DAYS = clean(j.days);
+    HAS_USD = DAYS.filter((d) => d[4]).length > DAYS.length * 0.9;
+    if (HAS_USD) box.querySelector('.hc-seg[data-k="cur"]').hidden = false;
     box.hidden = false;
     document.body.classList.add('has-hchart');
     draw();

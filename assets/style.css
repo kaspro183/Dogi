@@ -333,6 +333,7 @@ body.has-hchart .hero .wrap::after{display:none}
 .hc-l{display:flex;align-items:center;gap:14px}
 .hc-lbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .hc-ath{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}.hc-ath b{color:var(--gold)}
+.hc-ctrl{display:flex;gap:8px}.hc-seg[hidden]{display:none}
 .hc-seg{display:flex;background:rgba(13,11,8,.6);border:1px solid var(--line);border-radius:999px;padding:3px}
 .hc-seg b{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:12px;padding:5px 11px;border-radius:999px;color:var(--muted);cursor:pointer;user-select:none}
 .hc-seg b:hover{color:var(--text)}
