@@ -323,3 +323,26 @@ nav{background:rgba(11,9,6,.55)}
     radial-gradient(130% 32% at 50% 104%, rgba(255,214,64,.9) 0%, rgba(245,196,0,.55) 22%, rgba(190,130,0,.25) 45%, transparent 75%),
     linear-gradient(180deg,#171003 0%,#0b0906 100%)}
 }
+
+/* ===== Price history strip in the hero glow ===== */
+.hc-wrap{position:relative;max-width:var(--max);margin:34px auto 0;padding:0 20px}
+.hc-wrap[hidden]{display:none}
+body.has-hchart .hero{padding-bottom:70px}
+body.has-hchart .hero .wrap::after{display:none}
+.hc-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.hc-l{display:flex;align-items:center;gap:14px}
+.hc-lbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.hc-ath{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}.hc-ath b{color:var(--gold)}
+.hc-seg{display:flex;background:rgba(13,11,8,.6);border:1px solid var(--line);border-radius:999px;padding:3px}
+.hc-seg b{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:12px;padding:5px 11px;border-radius:999px;color:var(--muted);cursor:pointer;user-select:none}
+.hc-seg b:hover{color:var(--text)}
+.hc-seg b.on{background:var(--gold);color:#1c1302}
+.hc-plot{position:relative}
+.hc-plot svg{display:block;width:100%;height:auto;cursor:crosshair}
+.hc-ax{font-family:'JetBrains Mono',monospace;font-size:11px;fill:#e9dcb8;paint-order:stroke;stroke:rgba(13,11,8,.55);stroke-width:3px}
+.hc-dot{position:absolute;display:none;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);pointer-events:none}
+.hc-tip{position:absolute;display:none;background:#0d0b08;border:1px solid rgba(245,196,0,.5);border-radius:12px;padding:8px 12px;font-size:13px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5);white-space:nowrap;z-index:5}
+.hc-tip b{display:block;font-size:17px;color:var(--gold)}
+.hc-tip span{display:block;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px}
+.hc-note{font-size:12px;color:#cfc4a8;opacity:.7;margin-top:4px;text-align:right}
+@media(max-width:820px){.hc-wrap{margin-top:26px}.hc-note{text-align:left}}
