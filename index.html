@@ -92,6 +92,53 @@
   </div>
 </div>
 
+<section id="roadmap">
+  <svg class="rm-road" viewBox="0 0 1440 1200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="rmFade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1200"><stop offset="0" stop-color="#ffdb4d" stop-opacity="0"/><stop offset=".18" stop-color="#ffdb4d" stop-opacity="1"/><stop offset=".85" stop-color="#ffdb4d" stop-opacity="1"/><stop offset="1" stop-color="#ffdb4d" stop-opacity="0"/></linearGradient>
+      <mask id="rmMask"><rect width="1440" height="1200" fill="url(#rmFade)"/></mask>
+      <filter id="rmGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+      <filter id="rmSoft"><feGaussianBlur stdDeviation="2.5"/></filter>
+    </defs>
+    <g mask="url(#rmMask)" transform="translate(130,0)">
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#f5c400" stroke-opacity=".10" stroke-width="210" filter="url(#rmGlow)"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#f5c400" stroke-opacity=".38" stroke-width="164"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#0e0b06" stroke-width="158"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#f5c400" stroke-opacity=".035" stroke-width="158"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#f5c400" stroke-opacity=".18" stroke-width="1.5" stroke-dasharray="2 14" transform="translate(0,0)" style="display:none"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#ffdb4d" stroke-opacity=".35" stroke-width="7" stroke-dasharray="34 26" stroke-linecap="round" filter="url(#rmSoft)"/>
+      <path d="M1180 -60 C 1180 220, 520 260, 560 520 S 1220 820, 980 1000 S 420 1120, 380 1280" fill="none" stroke="#ffe680" stroke-opacity=".55" stroke-width="3" stroke-dasharray="34 26" stroke-linecap="round"/>
+      <g class="rm-lights"></g>
+    </g>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">Roadmap</p>
+    <h2 class="reveal">The DOGI roadmap.</h2>
+    <p class="sub reveal">Much build. Such vision. Step by step.</p>
+    <div class="rm-grid">
+    <ol class="rm reveal">
+      <li class="rm-step done"><div class="rm-dot" aria-hidden="true">🌅</div><div class="rm-txt"><span class="rm-n mono">Phase 1</span><h3>Wake up</h3><p>New site, active official account, liquidity pledges</p><span class="rm-tag mono">Done</span></div></li>
+      <li class="rm-step now"><div class="rm-dot" aria-hidden="true">🧪</div><div class="rm-txt"><span class="rm-n mono">Phase 2</span><h3>Test</h3><p>DOGI on the DogeOS testnet with Laika</p><span class="rm-tag mono">Now</span></div></li>
+      <li class="rm-step "><div class="rm-dot" aria-hidden="true">🌉</div><div class="rm-txt"><span class="rm-n mono">Phase 3</span><h3>Bridge</h3><p>DOGI from Dogecoin to DogeOS</p></div></li>
+      <li class="rm-step "><div class="rm-dot" aria-hidden="true">🌊</div><div class="rm-txt"><span class="rm-n mono">Phase 4</span><h3>Pool</h3><p>DOGI/DOGE liquidity on DogeOS</p></div></li>
+      <li class="rm-step "><div class="rm-dot" aria-hidden="true">🥩</div><div class="rm-txt"><span class="rm-n mono">Phase 5</span><h3>Staking</h3><p>Put your DOGI to work</p></div></li>
+      <li class="rm-step "><div class="rm-dot" aria-hidden="true">🚀</div><div class="rm-txt"><span class="rm-n mono">Phase 6</span><h3>Expand</h3><p>More wallets, apps and places to use DOGI</p></div></li>
+      <li class="rm-step "><div class="rm-dot" aria-hidden="true">🏛️</div><div class="rm-txt"><span class="rm-n mono">Phase 7</span><h3>DAO</h3><p>Holders steer the future</p></div></li>
+    </ol>
+    <aside class="rm-side reveal">
+      <img src="assets/dogi-driving.webp" alt="DOGI driving down the road" width="800" height="800" loading="lazy">
+      <div class="rm-card">
+        <span class="rm-n mono">Where we are</span>
+        <h3>Phase 2 of 7 · Test</h3>
+        <div class="rm-bar" aria-hidden="true"><span style="width:28%"></span></div>
+        <p>DOGI is being tested on the DogeOS testnet with Laika. Next up: the bridge from Dogecoin.</p>
+        <div class="rm-cta"><a class="btn btn-gold" href="pledge.html">Pledge for the pool</a><a class="btn btn-ghost" href="dogeos.html">DOGI on DogeOS →</a></div>
+      </div>
+    </aside>
+    </div>
+    <p class="rm-foot mono">21M. Fixed forever. Step by step.</p>
+  </div>
+</section>
 <section id="dogeos-news">
   <div class="wrap">
     <p class="kicker">DogeOS</p>
@@ -196,5 +243,11 @@
 </footer>
 <script src="assets/app.js"></script>
 <script src="assets/chart.js" defer></script>
+<script>
+(function(){var svg=document.querySelector('.rm-road');if(!svg)return;var p=svg.querySelector('path'),g=svg.querySelector('.rm-lights'),L=p.getTotalLength(),h='';
+for(var d=90;d<L;d+=150){var a=p.getPointAtLength(d),b=p.getPointAtLength(d+1),dx=b.x-a.x,dy=b.y-a.y,n=Math.hypot(dx,dy)||1,nx=-dy/n,ny=dx/n;
+[1,-1].forEach(function(s){var x=a.x+nx*s*96,y=a.y+ny*s*96;h+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="9" fill="#ffdb4d" opacity=".18" filter="url(#rmGlow)"/><circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.6" fill="#ffe680" opacity=".75"/>'});}
+g.innerHTML=h;})();
+</script>
 </body>
 </html>
