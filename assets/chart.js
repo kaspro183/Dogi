@@ -7,7 +7,7 @@
   const plot = document.getElementById('hc-plot');
   const athEl = document.getElementById('hc-ath');
   const RANGES = { '7D': 7, '1M': 30, '1Y': 365, 'ALL': Infinity };
-  let range = 'ALL', cur = 'D', DAYS = [], HAS_USD = false;
+  let range = '1Y', cur = 'D', DAYS = [], HAS_USD = false;
 
   // Drop isolated outlier days (e.g. one sale at a typo price): a day is removed when its
   // price is more than 4x above, or 4x below, the median of the 7 days on each side.
