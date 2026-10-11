@@ -47,19 +47,31 @@
     return { token, dogeUsd: du };
   }
 
+  // Ð / $ toggle for the stat cards ($ by default; a big "M Ð" figure is easily misread as dollars)
+  let statCur = '$', lastToken = null;
   function render(t){
-    const last = t.lastPrice / SHIBE, floor = t.floorPrice / SHIBE, mcap = t.marketcap / SHIBE;
-    $('s-price').textContent = fmtDoge(last);
+    lastToken = t;
+    const last = t.lastPrice / SHIBE, floor = t.floorPrice / SHIBE;
+    // market cap valued at the floor price (lowest listing) x 21M supply
+    const mcap = floor > 0 ? floor * 21000000 : t.marketcap / SHIBE;
+    const inUsd = statCur === '$' && dogeUsd;
+    const main = (doge, d) => inUsd ? fmtUsd(doge * dogeUsd, d) : fmtDoge(doge);
+    const sub = (doge, d) => inUsd ? '≈ ' + fmtDoge(doge) : usd(doge, d);
+    $('s-price').textContent = main(last, 4);
     setChg($('s-chg'), t.change7d != null ? t.change7d * 100 : null);
     if (t.change7d != null) $('s-chg').textContent += ' 7d';
-    $('s-price-usd').textContent = usd(last, 4);
-    $('s-floor').textContent = fmtDoge(floor);
-    $('s-floor-usd').textContent = usd(floor, 4);
-    $('s-mcap').textContent = fmtDoge(mcap);
-    $('s-mcap-usd').textContent = usd(mcap, 0);
+    $('s-price-usd').textContent = sub(last, 4);
+    $('s-floor').textContent = main(floor, 4);
+    $('s-floor-usd').textContent = sub(floor, 4);
+    $('s-mcap').textContent = main(mcap, 0);
+    $('s-mcap-usd').textContent = sub(mcap, 0);
     $('s-holders').textContent = Number(t.holders).toLocaleString('en-US');
     $('s-list').textContent = t.listings != null ? Number(t.listings).toLocaleString('en-US') + ' listings' : '';
   }
+  document.querySelectorAll('#stat-cur b').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('#stat-cur b').forEach((x) => x.classList.remove('on'));
+    b.classList.add('on'); statCur = b.dataset.cur; if (lastToken) render(lastToken);
+  }));
 
   let hasLive = false;
   async function load(){

@@ -62,18 +62,19 @@
   <div class="hc-wrap" id="hchart" hidden>
     <div class="hc-top">
       <div class="hc-l"><span class="hc-lbl">Price history</span><span class="hc-ath">ATH <b id="hc-ath">—</b></span></div>
-      <div class="hc-ctrl"><div class="hc-seg" data-k="range" role="group" aria-label="Period"><b>7D</b><b>1M</b><b class="on">1Y</b><b>ALL</b></div><div class="hc-seg" data-k="cur" role="group" aria-label="Currency" hidden><b class="on" data-cur="D">Ð</b><b data-cur="$">$</b></div></div>
+      <div class="hc-ctrl"><div class="hc-seg" data-k="range" role="group" aria-label="Period"><b>7D</b><b>1M</b><b class="on">1Y</b><b>ALL</b></div><div class="hc-seg" data-k="cur" role="group" aria-label="Currency" hidden><b data-cur="D">Ð</b><b class="on" data-cur="$">$</b></div></div>
     </div>
     <div class="hc-plot" id="hc-plot"></div>
     <div class="hc-note">Daily median price · data from Doggy Market, DOGE/USD from Coinbase</div>
   </div>
 </header>
 <div class="wrap">
+  <div class="stat-bar"><span class="hc-lbl">Live stats</span><div class="hc-seg" id="stat-cur" role="group" aria-label="Currency"><b class="on" data-cur="$">$</b><b data-cur="D">Ð</b></div></div>
   <div class="stats" id="stats">
-    <div class="stat"><small>Last price</small><strong id="s-price">—</strong><span class="chg" id="s-chg"></span><em class="usd" id="s-price-usd"></em></div>
+    <div class="stat mc"><small>Market cap · at floor</small><strong id="s-mcap">—</strong><em class="usd" id="s-mcap-usd"></em></div>
     <div class="stat"><small>Floor price</small><strong id="s-floor">—</strong><em class="usd" id="s-floor-usd"></em></div>
-    <div class="stat"><small>Market cap</small><strong id="s-mcap">—</strong><em class="usd" id="s-mcap-usd"></em></div>
     <div class="stat"><small>Holders</small><strong id="s-holders">—</strong><em class="usd" id="s-list"></em></div>
+    <div class="stat"><small>Last sale</small><strong id="s-price">—</strong><span class="chg" id="s-chg"></span><em class="usd" id="s-price-usd"></em></div>
   </div>
   <div class="stats-note">
     <span><span class="pulse" id="s-dot"></span><span id="s-status">Loading live data…</span></span>

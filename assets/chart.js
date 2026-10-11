@@ -7,7 +7,7 @@
   const plot = document.getElementById('hc-plot');
   const athEl = document.getElementById('hc-ath');
   const RANGES = { '7D': 7, '1M': 30, '1Y': 365, 'ALL': Infinity };
-  let range = '1Y', cur = 'D', DAYS = [], HAS_USD = false;
+  let range = '1Y', cur = '$', DAYS = [], HAS_USD = false;
 
   // Drop isolated outlier days (e.g. one sale at a typo price): a day is removed when its
   // price is more than 4x above, or 4x below, the median of the 7 days on each side.
@@ -103,7 +103,7 @@
     if (!j || !j.complete || !Array.isArray(j.days) || j.days.length < 10) return; // stay hidden
     DAYS = clean(j.days);
     HAS_USD = DAYS.filter((d) => d[4]).length > DAYS.length * 0.9;
-    if (HAS_USD) box.querySelector('.hc-seg[data-k="cur"]').hidden = false;
+    if (HAS_USD) box.querySelector('.hc-seg[data-k="cur"]').hidden = false; else cur = 'D';
     box.hidden = false;
     document.body.classList.add('has-hchart');
     draw();

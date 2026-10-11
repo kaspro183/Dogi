@@ -391,3 +391,5 @@ body.has-hchart .hero .wrap::after{display:none}
 @media(min-width:901px){.wallets{grid-template-columns:repeat(4,1fr)}.wallets .wallet{grid-column:span 4}.wallets .wallet.rec{grid-column:span 1}}
 .wnote{display:block;margin-top:6px;color:#e9b949;font-size:13px}
 .warn.info{border-color:rgba(245,196,0,.45);background:rgba(245,196,0,.07)}.warn.info b:first-child{color:var(--gold)}
+.stat.mc strong{color:var(--gold)}
+.stat-bar{display:flex;justify-content:space-between;align-items:center;margin:-6px 0 10px}
