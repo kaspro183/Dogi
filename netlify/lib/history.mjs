@@ -181,3 +181,22 @@ export async function dogeUsdRates() {
   await s.setJSON('dogeusd', { updated: new Date().toISOString(), rates });
   return rates;
 }
+
+// ---- Holder count history: one snapshot per day, recorded whenever /api/dogi refreshes ----
+// Doggy Market only exposes today's holder count, so the history starts on the day this was deployed.
+export async function recordHolders(n) {
+  n = Number(n);
+  if (!(n > 0)) return;
+  const s = store();
+  const day = new Date().toISOString().slice(0, 10);
+  const cur = await s.get('holders', { type: 'json' }).catch(() => null) || { days: {} };
+  if (cur.days[day] === n) return;            // nothing new, skip the write
+  cur.days[day] = n;                          // last value of the day wins
+  cur.updated = new Date().toISOString();
+  await s.setJSON('holders', cur);
+}
+
+export async function holderSeries() {
+  const cur = await store().get('holders', { type: 'json' }).catch(() => null);
+  return cur ? Object.keys(cur.days).sort().map((d) => [d, cur.days[d]]) : [];
+}

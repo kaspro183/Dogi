@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOGI balance checker</title>
+<meta name="description" content="Check the DOGI balance and DOGI history of any Dogecoin address. Read-only: no wallet connection, no signature.">
+<meta property="og:title" content="DOGI balance checker">
+<meta property="og:description" content="Check the DOGI balance and DOGI history of any Dogecoin address. Read-only: no wallet connection, no signature.">
+<meta property="og:image" content="https://dogidrc20.org/assets/banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dogidrc20.org/assets/banner.jpg">
+<meta name="theme-color" content="#0d0b08">
+<link rel="icon" type="image/webp" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+    <div class="links">
+      <a href="about.html">About</a>
+      <a href="dogeos.html">DogeOS</a>
+      <a href="index.html#roadmap">Roadmap</a>
+      <a href="news.html">News</a>
+      <a href="buy.html">How to buy</a>
+      <a href="balance.html" class="on" aria-current="page">Balance</a>
+      <a href="pledge.html">Pledge</a>
+      <a class="m-soc" href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X / Twitter</a>
+      <a class="m-soc" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="soc" href="https://x.com/DogiDrc20" target="_blank" rel="noopener" aria-label="DOGI on X (Twitter)" title="X / Twitter">𝕏</a>
+      <a class="soc" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener" aria-label="DOGI on Telegram" title="Telegram"><img src="assets/telegram.png" alt="" width="40" height="40"></a>
+      <a class="btn btn-gold" href="https://doggy.market/dogi" target="_blank" rel="noopener">Buy DOGI</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</nav>
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Balance checker</p>
+    <h1>Check your DOGI balance</h1>
+    <p class="sub" style="margin-bottom:0">Paste any Dogecoin address to see its DOGI balance and DOGI history. Read-only: no wallet connection, no signature.</p>
+  </div>
+</header>
+<section id="balance">
+  <div class="wrap">
+    <div class="bc reveal">
+      <form class="bc-form" id="bc-form" novalidate>
+        <input id="bc-addr" name="address" placeholder="D… your public Dogecoin address" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Dogecoin address">
+        <button class="btn btn-gold" type="submit">Check balance</button>
+      </form>
+      <p class="bc-safe">🔐 Only your <b>public address</b> is needed. Never type your seed phrase or private key on any website.</p>
+      <p class="bc-msg" id="bc-msg" role="status"></p>
+      <div class="bc-res" id="bc-res" hidden>
+        <div class="bc-ra"><span class="mono" id="bc-addr-out"></span><a id="bc-dm" href="https://doggy.market/" target="_blank" rel="noopener">View on Doggy Market ↗</a></div>
+        <div class="bc-grid">
+          <div class="big"><small>Total balance</small><strong><span id="bc-total">0</span> DOGI</strong><em id="bc-val"></em></div>
+          <div><small>Available</small><strong id="bc-avail">0</strong><em>ready to send or sell</em></div>
+          <div><small>Inscribed</small><strong id="bc-insc">0</strong><em>locked in a transfer or listing</em></div>
+        </div>
+      </div>
+      <div class="bc-note">ℹ️<span><b>Balances can lag on some explorers.</b> A recent transfer may take time to show up elsewhere. Doggy Market is the reference.</span></div>
+    </div>
+
+    <div class="bc-hist" id="bc-hist" hidden>
+      <h3>DOGI history</h3>
+      <div class="bc-table" role="table" aria-label="DOGI history of this address">
+        <div class="bc-row bc-h" role="row"><span>Action</span><span>Amount</span><span>From → To</span><span>Date</span></div>
+        <div id="bc-rows"></div>
+      </div>
+      <p class="bc-empty" id="bc-empty" hidden>No DOGI activity found for this address.</p>
+      <button class="btn btn-ghost bc-more" id="bc-more" type="button" hidden>Load older activity</button>
+      <p class="bc-legend"><b>Inscribe</b> = DOGI prepared for a transfer or a listing (still on this address until sent or sold).</p>
+    </div>
+  </div>
+</section>
+<section id="community" class="alt">
+  <div class="wrap">
+    <p class="kicker">Community</p>
+    <h2 class="reveal">Join the pack.</h2>
+    <p class="sub reveal">DOGI is community-run. Come say gm.</p>
+    <div class="comm">
+      <a class="reveal" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener"><span class="ic">✈️</span><div><b>Telegram</b><span>@dogi_doginals_drc20</span></div></a>
+      <a class="reveal" href="https://x.com/DogiDrc20" target="_blank" rel="noopener"><span class="ic">𝕏</span><div><b>X / Twitter</b><span>@DogiDrc20</span></div></a>
+      <a class="reveal" href="https://doggy.market/dogi" target="_blank" rel="noopener"><span class="ic">🦴</span><div><b>Doggy Market</b><span>Trade DOGI</span></div></a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+      <div class="foot-links">
+        <a href="about.html">About</a><a href="dogeos.html">DogeOS</a><a href="index.html#roadmap">Roadmap</a><a href="news.html">News</a><a href="buy.html">How to buy</a><a href="balance.html">Balance</a><a href="pledge.html">Pledge</a>
+        <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <p>Disclaimer: this website is made by the DOGI community for information only and is not financial advice. Crypto assets are highly volatile and you can lose your entire investment. Always do your own research.</p>
+    <p>© <span id="yr">2026</span> DOGI Community · The first DRC-20 token on Dogecoin · Much wow.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script src="assets/balance.js"></script>
+</body>
+</html>

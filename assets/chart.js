@@ -88,11 +88,11 @@
     svg.addEventListener('touchend', () => setTimeout(leave, 1500));
   }
 
-  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => DAYS.length && draw(), 150); });
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (DAYS.length) draw(); drawHolders(); }, 150); });
 
   box.querySelectorAll('.hc-seg[data-k="range"] b').forEach((b) => b.addEventListener('click', () => {
     box.querySelectorAll('.hc-seg[data-k="range"] b').forEach((x) => x.classList.remove('on'));
-    b.classList.add('on'); range = b.textContent.trim(); draw();
+    b.classList.add('on'); range = b.textContent.trim(); draw(); drawHolders();
   }));
   box.querySelectorAll('.hc-seg[data-k="cur"] b').forEach((b) => b.addEventListener('click', () => {
     box.querySelectorAll('.hc-seg[data-k="cur"] b').forEach((x) => x.classList.remove('on'));
@@ -107,5 +107,77 @@
     box.hidden = false;
     document.body.classList.add('has-hchart');
     draw();
+    initHolders(j.holders);
   }).catch(() => {});
+
+  // ---- Holders curve (folded under the price strip) ----
+  // /api/dogi-history -> holders: [[YYYY-MM-DD, count], ...], one snapshot per day since tracking started.
+  const hh = document.getElementById('hh');
+  const hplot = document.getElementById('hh-plot');
+  let HOLD = [];
+  function initHolders(list) {
+    if (!hh || !Array.isArray(list) || !list.length) return;
+    HOLD = list.filter((d) => d && d[1] > 0);
+    if (!HOLD.length) return;
+    const last = HOLD[HOLD.length - 1][1];
+    document.getElementById('hh-now').textContent = last.toLocaleString('en-US');
+    // change over 30 days (or since the first snapshot if tracking is younger)
+    const ref = HOLD[Math.max(0, HOLD.length - 31)][1], diff = last - ref, chg = document.getElementById('hh-chg');
+    if (HOLD.length > 1 && diff) {
+      chg.textContent = (diff > 0 ? '▲ +' : '▼ ') + diff.toLocaleString('en-US') + (HOLD.length > 30 ? ' 30d' : ' since ' + dshort(HOLD[0][0]));
+      chg.classList.toggle('dn', diff < 0);
+    }
+    const tog = hh.querySelector('.hh-tog'), body = document.getElementById('hh-body');
+    tog.addEventListener('click', () => {
+      const open = tog.getAttribute('aria-expanded') !== 'true';
+      tog.setAttribute('aria-expanded', open); body.hidden = !open;
+      tog.querySelector('.hh-cta-t').textContent = open ? 'Hide chart' : 'Show chart';
+      if (open) drawHolders();
+    });
+    hh.hidden = false;
+  }
+  const dshort = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+  function drawHolders() {
+    if (!hplot || !HOLD.length || document.getElementById('hh-body').hidden) return;
+    const n0 = RANGES[range], pts = n0 === Infinity ? HOLD : HOLD.slice(-n0);
+    if (pts.length < 2) {
+      hplot.innerHTML = `<div class="hh-wait">Holder tracking started on <b>${dlong(HOLD[0][0])}</b>.<br>The curve builds up day by day: come back soon 🐕</div>`;
+      return;
+    }
+    const W = Math.max(280, hplot.clientWidth || 1080), H = W < 600 ? 120 : 130, pr = 54, pt = 10, pb = 20, n = pts.length - 1;
+    const vals = pts.map((d) => d[1]), hi = Math.max(...vals), lo = Math.min(...vals), pad = Math.max(5, (hi - lo) * 0.12);
+    const min = lo - pad, max = hi + pad;
+    const X = (i) => (i / n) * (W - pr), Y = (v) => pt + (1 - (v - min) / (max - min)) * (H - pt - pb);
+    let d = ''; pts.forEach((p, i) => { d += (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(p[1]).toFixed(1); });
+    let g = '';
+    [0, 0.5, 1].forEach((f) => { const v = min + (max - min) * f, y = Y(v);
+      g += `<line x1="0" x2="${W - pr}" y1="${y}" y2="${y}" stroke="rgba(245,196,0,.12)" stroke-dasharray="3 5"/><text class="hc-ax" x="${W - pr + 8}" y="${y + 4}">${Math.round(v).toLocaleString('en-US')}</text>`; });
+    for (let j = 0; j < 4; j++) { const i = Math.round((j * n) / 3); g += `<text class="hc-ax" x="${Math.max(30, Math.min(X(i), W - pr - 30))}" y="${H - 3}" text-anchor="middle">${dshort(pts[i][0])}</text>`; }
+    hplot.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="DOGI holders over time">
+<defs><linearGradient id="hhg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdb4d" stop-opacity=".35"/><stop offset="1" stop-color="#f5c400" stop-opacity="0"/></linearGradient></defs>${g}
+<path d="${d}L${X(n)} ${H - pb}L0 ${H - pb}Z" fill="url(#hhg)"/>
+<path d="${d}" fill="none" stroke="#ffe680" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+<circle cx="${X(n)}" cy="${Y(vals[n])}" r="4.5" fill="#f5c400"/>
+<line class="hc-hl" x1="0" x2="0" y1="${pt}" y2="${H - pb}" stroke="#f5c400" stroke-opacity=".55" stroke-dasharray="2 4" vector-effect="non-scaling-stroke" style="display:none"/>
+</svg><div class="hc-dot"></div><div class="hc-tip"></div>`;
+    const svg = hplot.querySelector('svg'), tip = hplot.querySelector('.hc-tip'), dot = hplot.querySelector('.hc-dot'), hl = svg.querySelector('.hc-hl');
+    const move = (e) => {
+      const b = svg.getBoundingClientRect(), cx = (e.touches ? e.touches[0].clientX : e.clientX) - b.left;
+      const i = Math.max(0, Math.min(n, Math.round(((cx / b.width) * W / (W - pr)) * n)));
+      const x = X(i), y = Y(pts[i][1]), px = (x / W) * b.width, py = (y / H) * b.height;
+      hl.setAttribute('x1', x); hl.setAttribute('x2', x); hl.style.display = '';
+      dot.style.cssText = `display:block;left:${px}px;top:${py}px`;
+      tip.innerHTML = `<span>${dlong(pts[i][0])}</span><b>${pts[i][1].toLocaleString('en-US')}</b><span>holders</span>`;
+      tip.style.display = 'block';
+      tip.style.left = Math.min(px + 14, b.width - tip.offsetWidth - 2) + 'px';
+      tip.style.top = Math.max(-8, py - tip.offsetHeight - 10) + 'px';
+    };
+    const leave = () => { tip.style.display = 'none'; dot.style.display = 'none'; hl.style.display = 'none'; };
+    svg.addEventListener('mousemove', move);
+    svg.addEventListener('touchmove', move, { passive: true });
+    svg.addEventListener('touchstart', move, { passive: true });
+    svg.addEventListener('mouseleave', leave);
+    svg.addEventListener('touchend', () => setTimeout(leave, 1500));
+  }
 })();

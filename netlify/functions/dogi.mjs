@@ -1,6 +1,8 @@
 // Netlify Function: serves /api/dogi
 // Fetches DOGI stats + recent sales from Doggy Market (server-side, no CORS issue)
 // and the DOGE/USD rate, then returns one JSON payload. Cached at the edge for 5 min.
+// Each fresh run also records today's holder count (for the holders curve).
+import { recordHolders } from '../lib/history.mjs';
 const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (DOGI community site)',
   'Accept': 'application/json',
@@ -78,6 +80,7 @@ export default async (req) => {
       getSales(),
     ]);
     if (tokRes.status !== 'fulfilled') throw new Error('doggy.market unavailable');
+    await recordHolders(tokRes.value?.holders).catch(() => {});
     const dogeUsd = dogeRes.status === 'fulfilled' ? (dogeRes.value?.dogecoin?.usd ?? null) : null;
     const s = salesRes.status === 'fulfilled' ? salesRes.value : { sales: [], tried: [] };
     const body = { token: tokRes.value, dogeUsd, sales: s.sales, fetchedAt: new Date().toISOString() };
