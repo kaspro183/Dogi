@@ -3,11 +3,10 @@
 //   &test=1  -> re-posts the most recent sale (to check the setup), without touching the saved state
 // State in Netlify Blobs (store "dogi-bot", key "state"): { chatId, lastTime, lastKeys, count }
 import { botStore, latestSales, market, sendPhoto } from '../lib/telegram.mjs';
-import { renderCard, tier } from '../lib/salecard.mjs';
+import { renderCard } from '../lib/salecard.mjs';
 
 const MAX_PER_RUN = 5;
 const json = (b, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-const fmt = (x, d = 0) => Number(x).toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d });
 
 export default async (req) => {
   const q = new URL(req.url).searchParams;
@@ -46,10 +45,7 @@ export default async (req) => {
     const num = test ? count : ++count;
     try {
       const png = await renderCard({ n: num || 1, amount: s.amount, totalDoge: s.totalDoge, buyer: s.buyer }, m);
-      const t = tier(s.amount);
-      const usd = m.dogeUsd ? ` (~$${fmt(s.totalDoge * m.dogeUsd)})` : '';
-      const caption = `${t.icon} <b>${t.name} BUY</b>${test ? ' (test)' : ''}\n${fmt(s.amount)} $DOGI for ${fmt(s.totalDoge)} Ð${usd}`;
-      await sendPhoto(chatId, png, caption, [[{ text: '🛒 Buy DOGI on Doggy Market', url: 'https://doggy.market/dogi' }], [{ text: '🌐 dogidrc20.org', url: 'https://dogidrc20.org' }]]);
+      await sendPhoto(chatId, png, null, [[{ text: '🛒 Buy DOGI on Doggy Market', url: 'https://doggy.market/dogi' }]]);
       posted++;
     } catch (e) { errors.push(String(e.message || e)); }
   }
