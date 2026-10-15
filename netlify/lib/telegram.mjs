@@ -62,6 +62,12 @@ export async function market() {
   ]);
   const t = tok.status === 'fulfilled' ? tok.value : {};
   const dogeUsd = cg.status === 'fulfilled' ? cg.value?.dogecoin?.usd ?? null : null;
-  const floor = Number(t.floorPrice) / SHIBE;
-  return { dogeUsd, holders: Number(t.holders) || null, mcapUsd: floor > 0 && dogeUsd ? floor * 21e6 * dogeUsd : null };
+  const floor = Number(t.floorPrice) / SHIBE, last = Number(t.lastPrice) / SHIBE;
+  return {
+    dogeUsd, holders: Number(t.holders) || null, listings: Number(t.listings) || null,
+    floorDoge: floor > 0 ? floor : null, lastDoge: last > 0 ? last : null,
+    change7d: isFinite(Number(t.change7d)) ? Number(t.change7d) : null,
+    mcapDoge: floor > 0 ? floor * 21e6 : null,
+    mcapUsd: floor > 0 && dogeUsd ? floor * 21e6 * dogeUsd : null,
+  };
 }
