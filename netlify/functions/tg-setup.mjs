@@ -1,5 +1,6 @@
 // GET /api/tg-setup?key=CRON_SECRET              -> lists the groups/channels the bot has been added to
 // GET /api/tg-setup?key=CRON_SECRET&chat=<id>    -> picks that chat for buy alerts and sends a hello message
+// GET /api/tg-setup?key=CRON_SECRET&webhook=1     -> turns on the /wallets command
 import { botStore, tg, latestSales } from '../lib/telegram.mjs';
 
 const json = (b, s = 200) => new Response(JSON.stringify(b, null, 2), { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -10,6 +11,12 @@ export default async (req) => {
   if (!KEY || q.get('key') !== KEY) return json({ error: 'forbidden' }, 403);
   if (!process.env.TELEGRAM_BOT_TOKEN) return json({ error: 'TELEGRAM_BOT_TOKEN missing' }, 500);
   const store = botStore();
+  // &webhook=1 -> route bot commands (/wallets) to /api/tg-hook and show them in the "/" menu
+  if (q.get('webhook') === '1') {
+    await tg('setWebhook', { url: 'https://dogidrc20.org/api/tg-hook', secret_token: KEY, allowed_updates: ['message'], drop_pending_updates: true });
+    await tg('setMyCommands', { commands: [{ command: 'wallets', description: 'Wallets that work with DOGI' }] });
+    return json({ ok: true, note: 'webhook set: /wallets now answers in the group and in private' });
+  }
   const chat = q.get('chat');
   if (chat) {
     await tg('sendMessage', { chat_id: chat, text: '🐕 DOGI Bot is connected! New DOGI buys on Doggy Market will be posted here.\n\nThe bot never DMs anyone and never asks for funds.' });
