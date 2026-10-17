@@ -10,15 +10,19 @@ const SAFE = '🔐 Never share your seed phrase. Admins never DM first.';
 const WALLETS = {
   text: ['👛 <b>Wallets that work with DOGI</b>', '',
     '🦴 <b>Doggy Market wallet</b>: built-in, the easiest',
-    '👻 <b>Spooky Doge</b>: Chrome · iPhone',
-    '🟡 <b>Doge Soft</b>: Chrome · Android', '',
+    '👻 <b>Spooky Doge</b>: Chrome · iPhone · Android',
+    '🟡 <b>Doge Soft</b>: Chrome · Android',
+    '🕹️ <b>Nintondo</b>: Chrome (may show a different address from the same 12 words)', '',
     '♻️ Old Doginals Wallet, Doge Labs or MyDoge? Import your seed phrase into one of these.', '', SAFE].join('\n'),
   buttons: [
     [{ text: '🦴 Doggy Market', url: 'https://doggy.market/dogi' }],
     [{ text: '👻 Spooky Doge · Chrome', url: 'https://chromewebstore.google.com/detail/spooky-doge/llefaokflckonkllgdflmboibglnbbac' },
      { text: '👻 Spooky Doge · iPhone', url: 'https://apps.apple.com/us/app/spookydoge/id6757091894' }],
+    [{ text: '👻 Spooky Doge · Android', url: 'https://play.google.com/store/apps/details?id=xyz.spooksociety.wallet' }],
     [{ text: '🟡 Doge Soft · Chrome', url: 'https://chromewebstore.google.com/detail/doge-soft-wallet/mncnaalpffmdadokkpafllancebgjghf' },
      { text: '🟡 Doge Soft · Android', url: 'https://play.google.com/store/apps/details?id=com.dogecoin.dogesoftwallet' }],
+    [{ text: '🕹️ Nintondo · Chrome', url: 'https://chromewebstore.google.com/detail/nintondo-wallet/akkmagafhjjjjclaejjomkeccmjhdkpa' }],
+    [{ text: '📖 Full wallet guide', url: 'https://dogidrc20.org/buy.html' }],
   ],
 };
 
