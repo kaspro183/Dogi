@@ -11,7 +11,7 @@ export const DAO_URL = 'https://testnet.laika.market/tokens?address=0xF88599E888
 export const NETWORK = 'DogeOS testnet';
 
 // Laika endpoint, without the "?status=..." part. Can be overridden with the DAO_API_URL env var.
-export const LAIKA_PROPOSALS_URL = '';
+export const LAIKA_PROPOSALS_URL = 'https://ecotestapi.laikachain.dog/api/dao/0xF88599E8881e3133176D4F7937204c7A8bDB5776/proposals';
 
 // Only proposals from these addresses are shown and announced: on testnet anyone can create a proposal,
 // so this keeps random/spam proposals off the site and out of the Telegram group.
@@ -61,7 +61,7 @@ export async function loadProposals() {
   if (base) {
     try {
       const get = async (status) => {
-        const r = await fetch(`${base}${base.includes('?') ? '&' : '?'}status=${status}`, { headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0 (DOGI community site)' }, signal: AbortSignal.timeout(8000) });
+        const r = await fetch(`${base}${base.includes('?') ? '&' : '?'}status=${status}`, { headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0 (DOGI community site)', Origin: 'https://testnet.laika.market', Referer: 'https://testnet.laika.market/' }, signal: AbortSignal.timeout(8000) });
         if (!r.ok) throw new Error(`laika ${status} -> ${r.status}`);
         const j = await r.json();
         return Array.isArray(j?.proposals) ? j.proposals : [];
