@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOGI DAO Watch</title>
+<meta name="description" content="Follow the DOGI DAO: proposals open for votes, results, and how to vote with Laika on DogeOS.">
+<meta property="og:title" content="DOGI DAO Watch">
+<meta property="og:description" content="Follow the DOGI DAO: proposals open for votes, results, and how to vote with Laika on DogeOS.">
+<meta property="og:image" content="https://dogidrc20.org/assets/banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dogidrc20.org/assets/banner.jpg">
+<meta name="theme-color" content="#0d0b08">
+<link rel="icon" type="image/webp" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+    <div class="links">
+      <a href="about.html">About</a>
+      <a href="dogeos.html">DogeOS</a>
+      <a href="dao.html" class="on" aria-current="page">DAO</a>
+      <a href="index.html#roadmap">Roadmap</a>
+      <a href="news.html">News</a>
+      <a href="buy.html">How to buy</a>
+      <a href="pledge.html">Pledge</a>
+      <a class="m-soc" href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X / Twitter</a>
+      <a class="m-soc" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="soc" href="https://x.com/DogiDrc20" target="_blank" rel="noopener" aria-label="DOGI on X (Twitter)" title="X / Twitter">𝕏</a>
+      <a class="soc" href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener" aria-label="DOGI on Telegram" title="Telegram"><img src="assets/telegram.png" alt="" width="40" height="40"></a>
+      <a class="btn btn-gold" href="https://doggy.market/dogi" target="_blank" rel="noopener">Buy DOGI</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</nav>
+<header class="page-head">
+  <div class="wrap">
+    <p class="kicker">Governance</p>
+    <h1>DOGI DAO <span>Watch</span></h1>
+    <p class="sub" style="margin-bottom:0">The DOGI DAO lets the community decide how the treasury is used. Voting runs on Laika's governance module on DogeOS. Right now everything happens on <b>testnet</b>: a dry run to learn how governance works before mainnet.</p>
+  </div>
+</header>
+<section id="proposals">
+  <div class="wrap">
+    <div class="dao-note reveal">🧪 <b>Testnet only.</b> Test tokens have no real value. Never send real funds, and nobody official will ever DM you to "help you vote".</div>
+
+    <div class="dao-head reveal">
+      <h2>Open for votes</h2>
+      <a class="btn btn-gold" id="vote-top" href="https://testnet.laika.market/tokens?address=0xF88599E8881e3133176D4F7937204c7A8bDB5776&amp;view=dao" target="_blank" rel="noopener">🗳️ Vote on Laika ↗</a>
+    </div>
+    <div class="dao-list" id="dao-live"><p class="dao-empty">Loading proposals…</p></div>
+
+    <div id="dao-closed-wrap" hidden>
+      <h2 class="dao-h2 reveal">Closed proposals</h2>
+      <div class="dao-list" id="dao-closed"></div>
+    </div>
+
+    <p class="dao-src">Only official proposals are listed here. On testnet anyone can create a proposal, so if you see one on Laika that isn't on this page, treat it as unofficial. Votes are cast and counted on Laika.</p>
+  </div>
+</section>
+<section id="how" class="alt">
+  <div class="wrap">
+    <p class="kicker">How to vote</p>
+    <h2 class="reveal">Vote in four steps.</h2>
+    <p class="sub reveal">Your votes come from <b>veDOGI</b>: DOGI that you lock (stake) on Laika. You need a browser wallet (MetaMask works) connected to the DogeOS testnet.</p>
+    <div class="steps">
+      <div class="step reveal"><h3>Set up DogeOS</h3><p>Add the testnet to MetaMask on the portal, then claim free test DOGE from the faucet.</p><a class="inl" href="https://portal.testnet.dogeos.com" target="_blank" rel="noopener">Portal ↗</a> · <a class="inl" href="https://faucet.testnet.dogeos.com" target="_blank" rel="noopener">Faucet ↗</a></div>
+      <div class="step reveal"><h3>Get test DOGI</h3><p>Swap test DOGE for test DOGI on the BarkSwap pool.</p><a class="inl" href="https://www.barkswap.fi/pool/0x6c99d03236c57bc0810e28477a649f151aa1bf9d" target="_blank" rel="noopener">BarkSwap pool ↗</a></div>
+      <div class="step reveal"><h3>Lock for veDOGI</h3><p>Stake your DOGI for the lock length you choose. Longer locks give up to 3× voting power.</p><a class="inl" href="https://testnet.laika.market/tokens?address=0xF88599E8881e3133176D4F7937204c7A8bDB5776&amp;view=staking" target="_blank" rel="noopener">DOGI staking ↗</a></div>
+      <div class="step reveal"><h3>Vote</h3><p>When a proposal is live, open the DOGI DAO on Laika and vote FOR or AGAINST.</p><a class="inl" href="https://testnet.laika.market/tokens?address=0xF88599E8881e3133176D4F7937204c7A8bDB5776&amp;view=dao" target="_blank" rel="noopener">DOGI DAO on Laika ↗</a></div>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-top:26px">A proposal passes when more veDOGI votes FOR than AGAINST and at least 4% of all veDOGI has voted. Passed proposals are then executed on-chain from the treasury. These are the testnet rules and may change for mainnet. Telegram: type <span class="mono">/dao</span> in the group to see the proposals.</p>
+  </div>
+</section>
+<section id="faq">
+  <div class="wrap">
+    <p class="kicker">FAQ</p>
+    <h2 class="reveal">About the DOGI DAO</h2>
+    <div class="grid g3">
+      <div class="card reveal"><div class="ico">🏛️</div><h3>What is it?</h3><p>A community treasury governed by votes. Proposals are simple yes/no questions, voted with veDOGI (locked DOGI).</p></div>
+      <div class="card reveal"><div class="ico">💰</div><h3>What funds the treasury?</h3><p>On DogeOS, the treasury is planned to receive swap fees from the DOGI/DOGE pool and public donations. The test vote on a 1% bridge fee (proposal #7) passed.</p></div>
+      <div class="card reveal"><div class="ico">🧪</div><h3>Why testnet first?</h3><p>To test the whole flow (proposals, votes, results) with tokens that have no value, before any real treasury exists on mainnet.</p></div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a href="index.html" class="logo"><img class="coin" src="assets/logo.webp" alt="">DOGI</a>
+      <div class="foot-links">
+        <a href="about.html">About</a><a href="dogeos.html">DogeOS</a><a href="dao.html">DAO</a><a href="index.html#roadmap">Roadmap</a><a href="news.html">News</a><a href="buy.html">How to buy</a><a href="pledge.html">Pledge</a>
+        <a href="https://t.me/dogi_doginals_drc20" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://x.com/DogiDrc20" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <p>Disclaimer: this website is made by the DOGI community for information only and is not financial advice. Crypto assets are highly volatile and you can lose your entire investment. Always do your own research.</p>
+    <p>© <span id="yr">2026</span> DOGI Community · The first DRC-20 token on Dogecoin · Much wow.</p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script src="assets/dao.js"></script>
+</body>
+</html>

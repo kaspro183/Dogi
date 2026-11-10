@@ -1,5 +1,6 @@
 // Replies for the bot's slash commands: { text (HTML), buttons (inline keyboard rows) }
 import { market } from './telegram.mjs';
+import { daoSummary, loadProposals } from './dao.mjs';
 
 const n = (x, d = 0) => Number(x).toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d });
 const usd = (x) => x >= 1e6 ? '$' + (x / 1e6).toFixed(2) + 'M' : x >= 100 ? '$' + n(x) : x >= 1 ? '$' + n(x, 2) : '$' + n(x, 3);
@@ -113,4 +114,5 @@ export const COMMANDS = {
   wallets: { description: 'Wallets that work with DOGI', run: async () => WALLETS },
   links: { description: 'Official DOGI links', run: async () => LINKS },
   testnet: { description: 'Try DOGI on the DogeOS testnet', run: async () => TESTNET },
+  dao: { description: 'DOGI DAO proposals open for votes', run: async () => daoSummary((await loadProposals()).proposals) },
 };

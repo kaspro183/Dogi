@@ -1,9 +1,41 @@
 // GET /api/tg-buys?key=CRON_SECRET  -> posts every new DOGI sale from Doggy Market to Telegram as a "NEW BUY" card.
 // Called every few minutes by a timer (GitHub Actions). Nothing changes on the website itself.
 //   &test=1  -> re-posts the most recent sale (to check the setup), without touching the saved state
-// State in Netlify Blobs (store "dogi-bot", key "state"): { chatId, lastTime, lastKeys, count }
-import { botStore, latestSales, market, sendPhoto } from '../lib/telegram.mjs';
+// Also posts DOGI DAO news (lib/dao.mjs): each official proposal when it opens for votes, then its result.
+// State in Netlify Blobs (store "dogi-bot", key "state"): { chatId, lastTime, lastKeys, count, daoSeen, daoClosed }
+import { botStore, latestSales, market, sendPhoto, tg } from '../lib/telegram.mjs';
 import { renderCard } from '../lib/salecard.mjs';
+import { loadProposals, newProposalAlert, resultAlert } from '../lib/dao.mjs';
+
+// The first time, it only records what already exists (no post). After that:
+//  - a live proposal not seen before -> "New DOGI DAO proposal"
+//  - a proposal that was live and is now closed -> "DOGI DAO vote closed" with the result
+async function announceProposals(store, state, chatId) {
+  const { proposals } = await loadProposals();
+  if (!Array.isArray(state.daoSeen)) {
+    state.daoSeen = proposals.map((p) => p.id);
+    state.daoClosed = proposals.filter((p) => p.status !== 'live').map((p) => p.id);
+    await store.setJSON('state', state);
+    return 0;
+  }
+  state.daoClosed = Array.isArray(state.daoClosed) ? state.daoClosed : [];
+  const send = (a) => tg('sendMessage', { chat_id: chatId, text: a.text, parse_mode: 'HTML', disable_web_page_preview: true, reply_markup: { inline_keyboard: a.buttons } });
+  let posted = 0;
+  for (const p of [...proposals].sort((a, b) => a.num - b.num)) {
+    const seen = state.daoSeen.includes(p.id), done = state.daoClosed.includes(p.id);
+    if (p.status === 'live' && !seen) {
+      await send(newProposalAlert(p));
+      state.daoSeen.push(p.id); posted++;
+      await store.setJSON('state', state);       // saved after each post, so a later failure never re-posts it
+    } else if (p.status !== 'live' && !done) {
+      if (seen) { await send(resultAlert(p)); posted++; }   // only results of votes we announced
+      else state.daoSeen.push(p.id);
+      state.daoClosed.push(p.id);
+      await store.setJSON('state', state);
+    }
+  }
+  return posted;
+}
 
 const MAX_PER_RUN = 5;
 const json = (b, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -17,6 +49,11 @@ export default async (req) => {
   const state = (await store.get('state', { type: 'json' }).catch(() => null)) || {};
   const chatId = process.env.TELEGRAM_CHAT_ID || state.chatId;
   if (!chatId) return json({ error: 'no chat yet: open /api/tg-setup first' }, 409);
+
+  // new DAO proposals first; a failure here must never block the buy alerts
+  if (q.get('test') !== '1') {
+    try { await announceProposals(store, state, chatId); } catch (e) { console.log('dao alert failed', String(e.message || e)); }
+  }
 
   const sales = await latestSales(30);
   if (!sales.length) return json({ ok: true, posted: 0, note: 'no sales returned' });
