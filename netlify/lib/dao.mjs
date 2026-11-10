@@ -46,7 +46,9 @@ export function mapProposal(r) {
   return {
     id: 'laika-' + r.proposalId, num: Number(r.proposalId), title: String(r.title || 'Untitled proposal').trim(),
     status, opened: r.startTime || null, endsAt: r.endTime || null,
-    result: status === 'live' ? (total > 0n ? `${votes} so far` : votes) : votes + (status === 'passed' && r.canExecute ? ' · awaiting execution' : ''),
+    result: status === 'live' ? (total > 0n ? `${votes} so far` : votes)
+      : votes + (status === 'passed' && r.canExecute ? ' · awaiting execution' : '')
+        + (status === 'failed' && forV > against ? ' · 4% quorum not reached' : ''),
     proposer: String(r.proposer || '').toLowerCase(),
   };
 }
